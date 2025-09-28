@@ -15,7 +15,7 @@
 
 **Transform your productivity into an epic RPG adventure!** ⚔️✨
 
-[🚀 Live Demo](https://your-demo-url.com) • [📱 Install App](https://your-demo-url.com) • [📖 Documentation](#-documentation)
+[🚀 Live Demo](https://quest-to-do-harsh03app.netlify.app/) 
 
 </div>
 
@@ -213,7 +213,7 @@ task-quest/
 ├── 🔧 sw.js                   # Service worker
 ├── 🖼️ generate-icons.html     # Icon generator utility
 ├── 📖 README.md              # Project documentation
-└── 📁 icons/                 # PWA icons (generated)
+└── 📖manifest.json                 # PWA icons (generated)
 ```
 
 ### 🔧 **Technology Stack**
@@ -379,38 +379,12 @@ git push origin feature/amazing-feature
 - **Accessibility**: Improve screen reader support
 - **Performance**: Optimize loading and rendering
 
-## 📊 Project Statistics
 
-<div align="center">
 
-![GitHub stars](https://img.shields.io/github/stars/yourusername/task-quest?style=social)
-![GitHub forks](https://img.shields.io/github/forks/yourusername/task-quest?style=social)
-![GitHub issues](https://img.shields.io/github/issues/yourusername/task-quest?style=flat-square)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/yourusername/task-quest?style=flat-square)
 
-**📈 Project Growth**
-- **⭐ Stars**: Growing community support
-- **🍴 Forks**: Active development interest  
-- **🐛 Issues**: Community feedback and bug reports
-- **🔄 PRs**: Collaborative improvements
 
-</div>
 
-## 🏆 Recognition & Awards
 
-- **🥇 Best PWA Implementation** - Web Dev Awards 2024
-- **⭐ Featured Project** - GitHub Trending
-- **🎮 Innovation Award** - Gamification Summit
-- **📱 Mobile Excellence** - Progressive Web App Awards
-
-## 📞 Support & Community
-
-### 💬 **Get Help**
-
-- **🐛 Bug Reports**: [GitHub Issues](https://github.com/yourusername/task-quest/issues)
-- **💡 Feature Requests**: [GitHub Discussions](https://github.com/yourusername/task-quest/discussions)
-- **💬 Community Chat**: [Discord Server](https://discord.gg/taskquest)
-- **📧 Email Support**: support@taskquest.app
 
 ### 🌟 **Show Your Support**
 
@@ -427,11 +401,7 @@ git push origin feature/amazing-feature
 
 **Start your TASK QUEST adventure today!** ⚔️✨
 
-[![Install App](https://img.shields.io/badge/Install-App-667eea?style=for-the-badge&logo=download&logoColor=white)](https://your-demo-url.com)
-[![View Source](https://img.shields.io/badge/View-Source-4ECDC4?style=for-the-badge&logo=github&logoColor=white)](https://github.com/yourusername/task-quest)
-[![Report Bug](https://img.shields.io/badge/Report-Bug-FF6B6B?style=for-the-badge&logo=bug&logoColor=white)](https://github.com/yourusername/task-quest/issues)
-
-**Made with ❤️ by [Your Name](https://github.com/yourusername)**
+**Made with ❤️ by Harsh D (https://github.com/Deku04-print)**
 
 *Transform your tasks into an epic adventure!* 🚀
 
