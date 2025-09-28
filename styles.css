@@ -1,0 +1,2299 @@
+/* Retro Game Todo App - Outstanding Colors & Pixel Perfect Design */
+
+/* CSS Variables for Theme System */
+:root {
+    /* Arcade Theme (Default) */
+    --primary-bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    --secondary-bg: #0f1419;
+    --accent-color: #ff6b6b;
+    --accent-secondary: #4ecdc4;
+    --accent-tertiary: #45b7d1;
+    --text-primary: #ffffff;
+    --text-secondary: #a8a8a8;
+    --success-color: #51cf66;
+    --warning-color: #ffd43b;
+    --danger-color: #ff6b6b;
+    --border-color: #333;
+    --shadow-color: rgba(0, 0, 0, 0.8);
+    --glow-color: #00ffff;
+}
+
+/* Cyberpunk Theme */
+[data-theme="cyberpunk"] {
+    --primary-bg: linear-gradient(135deg, #0c0c0c 0%, #1a0033 50%, #330066 100%);
+    --secondary-bg: #000011;
+    --accent-color: #ff0080;
+    --accent-secondary: #00ff80;
+    --accent-tertiary: #8000ff;
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --success-color: #00ff80;
+    --warning-color: #ffff00;
+    --danger-color: #ff0080;
+    --border-color: #333;
+    --shadow-color: rgba(255, 0, 128, 0.3);
+    --glow-color: #ff0080;
+}
+
+/* Fantasy Theme */
+[data-theme="fantasy"] {
+    --primary-bg: linear-gradient(135deg, #2c1810 0%, #4a2c17 50%, #8b4513 100%);
+    --secondary-bg: #1a0f0a;
+    --accent-color: #ffd700;
+    --accent-secondary: #ff6347;
+    --accent-tertiary: #9370db;
+    --text-primary: #ffffff;
+    --text-secondary: #d2b48c;
+    --success-color: #32cd32;
+    --warning-color: #ffd700;
+    --danger-color: #dc143c;
+    --border-color: #8b4513;
+    --shadow-color: rgba(255, 215, 0, 0.3);
+    --glow-color: #ffd700;
+}
+
+/* Space Theme */
+[data-theme="space"] {
+    --primary-bg: linear-gradient(135deg, #000428 0%, #004e92 50%, #009ffd 100%);
+    --secondary-bg: #000011;
+    --accent-color: #00d4ff;
+    --accent-secondary: #ff6b35;
+    --accent-tertiary: #f7931e;
+    --text-primary: #ffffff;
+    --text-secondary: #b0c4de;
+    --success-color: #00ff88;
+    --warning-color: #ffaa00;
+    --danger-color: #ff3366;
+    --border-color: #1e3a8a;
+    --shadow-color: rgba(0, 212, 255, 0.3);
+    --glow-color: #00d4ff;
+}
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Press Start 2P', monospace;
+    background: var(--primary-bg);
+    min-height: 100vh;
+    color: var(--text-primary);
+    overflow-x: hidden;
+    position: relative;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+/* Game Background */
+.game-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.pixel-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(20px, 20px); }
+}
+
+.floating-pixels {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.floating-pixels::before,
+.floating-pixels::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--glow-color);
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+}
+
+.floating-pixels::before {
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.floating-pixels::after {
+    top: 60%;
+    right: 15%;
+    animation-delay: 3s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) scale(1); opacity: 0.7; }
+    50% { transform: translateY(-20px) scale(1.2); opacity: 1; }
+}
+
+/* Theme Selector */
+.game-theme-selector {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+}
+
+.game-theme-btn {
+    width: 50px;
+    height: 50px;
+    border: 3px solid var(--border-color);
+    background: var(--secondary-bg);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.game-theme-btn:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 20px var(--glow-color);
+    transform: scale(1.1);
+}
+
+.game-theme-btn.active {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    box-shadow: 0 0 30px var(--glow-color);
+}
+
+.game-theme-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.game-theme-btn:hover::before {
+    left: 100%;
+}
+
+/* Container */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    animation: gameStart 1s ease-out;
+}
+
+@keyframes gameStart {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Game Header */
+.game-header {
+    text-align: center;
+    margin-bottom: 30px;
+    background: var(--secondary-bg);
+    border: 3px solid var(--border-color);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 30px var(--shadow-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.game-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-color), var(--accent-secondary), var(--accent-tertiary));
+    animation: borderGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes borderGlow {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.game-title-section {
+    margin-bottom: 20px;
+}
+
+.game-title {
+    font-size: 2.8rem;
+    margin-bottom: 12px;
+    text-shadow: 0 0 20px var(--glow-color);
+    animation: titleGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+    0% { text-shadow: 0 0 20px var(--glow-color); }
+    100% { text-shadow: 0 0 30px var(--glow-color), 0 0 40px var(--accent-color); }
+}
+
+.title-pixel {
+    display: inline-block;
+    animation: pixelBounce 2s ease-in-out infinite;
+}
+
+.title-pixel:nth-child(3) {
+    animation-delay: 1s;
+}
+
+@keyframes pixelBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.game-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+}
+
+/* Mumbai Time Display */
+.mumbai-time-display {
+    background: var(--secondary-bg);
+    border: 3px solid var(--accent-color);
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 20px;
+    box-shadow: 0 0 20px var(--glow-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.mumbai-time-display::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: timeGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes timeGlow {
+    0% { opacity: 0.3; }
+    100% { opacity: 0.7; }
+}
+
+.time-label {
+    font-size: 0.6rem;
+    color: var(--accent-color);
+    margin-bottom: 5px;
+    text-shadow: 0 0 10px var(--glow-color);
+}
+
+.time-value {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    font-weight: bold;
+    text-shadow: 0 0 15px var(--glow-color);
+    margin-bottom: 5px;
+    animation: timePulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes timePulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.05); }
+}
+
+.date-value {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+}
+
+/* Game HUD */
+.game-hud {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.hud-item {
+    background: var(--secondary-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hud-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+}
+
+.hud-item:hover::before {
+    transform: translateX(100%);
+}
+
+.hud-label {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.hud-value {
+    font-size: 1.4rem;
+    color: var(--accent-color);
+    font-weight: bold;
+    text-shadow: 0 0 10px var(--glow-color);
+}
+
+/* Progress Bar */
+.game-progress {
+    margin-top: 20px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 30px;
+    background: var(--secondary-bg);
+    border: 3px solid var(--border-color);
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-color), var(--accent-secondary));
+    width: 0%;
+    transition: width 0.5s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: progressShine 2s ease-in-out infinite;
+}
+
+@keyframes progressShine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.7rem;
+    color: var(--text-primary);
+    text-shadow: 2px 2px 0 var(--shadow-color);
+}
+
+/* Game Container */
+.game-container {
+    background: var(--secondary-bg);
+    border: 3px solid var(--border-color);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 0 40px var(--shadow-color);
+    position: relative;
+}
+
+.game-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    pointer-events: none;
+}
+
+/* Quest Input Section */
+.quest-input-section {
+    padding: 30px;
+    background: linear-gradient(135deg, var(--secondary-bg), var(--border-color));
+    border-bottom: 3px solid var(--border-color);
+}
+
+.quest-input-wrapper {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+}
+
+.quest-input-group {
+    flex: 1;
+}
+
+.quest-input {
+    width: 100%;
+    padding: 18px 24px;
+    border: 3px solid var(--border-color);
+    border-radius: 15px;
+    background: var(--secondary-bg);
+    color: var(--text-primary);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.8rem;
+    outline: none;
+    transition: all 0.3s ease;
+    margin-bottom: 15px;
+    min-height: 60px;
+}
+
+.quest-input:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 20px var(--glow-color);
+    transform: scale(1.02);
+}
+
+.quest-controls {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.deadline-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.deadline-date,
+.deadline-time {
+    flex: 1;
+    padding: 12px 16px;
+    border: 3px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--secondary-bg);
+    color: var(--text-primary);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.6rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 50px;
+}
+
+.deadline-date:focus,
+.deadline-time:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px var(--glow-color);
+}
+
+.clear-deadline-btn {
+    width: 35px;
+    height: 35px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--secondary-bg);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+}
+
+.clear-deadline-btn:hover {
+    border-color: var(--danger-color);
+    color: var(--danger-color);
+    transform: scale(1.1);
+}
+
+.quest-priority,
+.quest-category {
+    flex: 1;
+    padding: 15px 18px;
+    border: 3px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--secondary-bg);
+    color: var(--text-primary);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.6rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 50px;
+}
+
+.quest-priority:focus,
+.quest-category:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px var(--glow-color);
+}
+
+.quest-add-btn {
+    padding: 18px 28px;
+    border: 3px solid var(--accent-color);
+    border-radius: 15px;
+    background: var(--accent-color);
+    color: var(--text-primary);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+    overflow: hidden;
+    min-height: 65px;
+    min-width: 120px;
+}
+
+.quest-add-btn:hover {
+    background: var(--accent-secondary);
+    border-color: var(--accent-secondary);
+    transform: scale(1.05);
+    box-shadow: 0 0 25px var(--glow-color);
+}
+
+.quest-add-btn:active {
+    transform: scale(0.95);
+}
+
+.quest-add-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.quest-add-btn:hover::before {
+    left: 100%;
+}
+
+/* Quest Filter Section */
+.quest-filter-section {
+    padding: 20px 30px;
+    background: var(--secondary-bg);
+    border-bottom: 3px solid var(--border-color);
+}
+
+.quest-filter-tabs {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.quest-filter-buttons,
+.quest-category-filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.quest-filter-btn,
+.quest-category-btn {
+    padding: 12px 18px;
+    border: 3px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--secondary-bg);
+    color: var(--text-secondary);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.6rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    min-height: 45px;
+    min-width: 80px;
+}
+
+.quest-filter-btn:hover,
+.quest-category-btn:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px var(--shadow-color);
+}
+
+.quest-filter-btn.active,
+.quest-category-btn.active {
+    background: var(--accent-color);
+    color: var(--text-primary);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 20px var(--glow-color);
+}
+
+.quest-stats {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.quest-stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.stat-label {
+    font-size: 0.5rem;
+    color: var(--text-secondary);
+}
+
+.stat-value {
+    font-size: 1rem;
+    color: var(--accent-color);
+    font-weight: bold;
+    text-shadow: 0 0 10px var(--glow-color);
+}
+
+.stat-value.overdue {
+    color: var(--danger-color);
+    animation: overdueBlink 1s ease-in-out infinite alternate;
+}
+
+@keyframes overdueBlink {
+    0% { opacity: 1; }
+    100% { opacity: 0.5; }
+}
+
+/* Alerts Section */
+.alerts-section {
+    background: var(--secondary-bg);
+    border: 3px solid var(--danger-color);
+    border-radius: 15px;
+    margin: 20px;
+    padding: 20px;
+    box-shadow: 0 0 30px rgba(255, 107, 107, 0.3);
+    animation: alertPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes alertPulse {
+    0% { box-shadow: 0 0 30px rgba(255, 107, 107, 0.3); }
+    100% { box-shadow: 0 0 40px rgba(255, 107, 107, 0.6); }
+}
+
+.alerts-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.alerts-title {
+    font-size: 0.8rem;
+    color: var(--danger-color);
+    text-shadow: 0 0 10px var(--danger-color);
+}
+
+.dismiss-all-btn {
+    padding: 8px 15px;
+    border: 2px solid var(--danger-color);
+    border-radius: 8px;
+    background: var(--secondary-bg);
+    color: var(--danger-color);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.4rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dismiss-all-btn:hover {
+    background: var(--danger-color);
+    color: var(--text-primary);
+    transform: scale(1.05);
+}
+
+.alerts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.alert-item {
+    background: var(--secondary-bg);
+    border: 2px solid var(--warning-color);
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    animation: alertSlideIn 0.5s ease-out;
+}
+
+@keyframes alertSlideIn {
+    0% {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.alert-item.overdue {
+    border-color: var(--danger-color);
+    background: rgba(255, 107, 107, 0.1);
+}
+
+.alert-item.upcoming {
+    border-color: var(--warning-color);
+    background: rgba(255, 212, 59, 0.1);
+}
+
+.alert-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.alert-content {
+    flex: 1;
+}
+
+.alert-title {
+    font-size: 0.6rem;
+    color: var(--text-primary);
+    margin-bottom: 5px;
+}
+
+.alert-description {
+    font-size: 0.5rem;
+    color: var(--text-secondary);
+}
+
+.alert-time {
+    font-size: 0.4rem;
+    color: var(--accent-color);
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.dismiss-alert-btn {
+    width: 25px;
+    height: 25px;
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    background: var(--secondary-bg);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.5rem;
+    flex-shrink: 0;
+}
+
+.dismiss-alert-btn:hover {
+    border-color: var(--danger-color);
+    color: var(--danger-color);
+    transform: scale(1.1);
+}
+
+/* Quest List Section */
+.quest-list-section {
+    min-height: 300px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.quest-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.quest-item {
+    background: var(--secondary-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    animation: questAppear 0.5s ease-out;
+}
+
+@keyframes questAppear {
+    0% {
+        opacity: 0;
+        transform: translateX(-30px) scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+.quest-item:hover {
+    border-color: var(--accent-color);
+    transform: translateX(5px);
+    box-shadow: 0 5px 20px var(--shadow-color);
+}
+
+.quest-item.completed {
+    opacity: 0.7;
+    background: linear-gradient(135deg, var(--secondary-bg), rgba(81, 207, 102, 0.1));
+}
+
+.quest-item.completed .quest-text {
+    text-decoration: line-through;
+    color: var(--text-secondary);
+}
+
+.quest-checkbox {
+    width: 25px;
+    height: 25px;
+    border: 3px solid var(--border-color);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    background: var(--secondary-bg);
+    flex-shrink: 0;
+}
+
+.quest-checkbox:hover {
+    border-color: var(--accent-color);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px var(--glow-color);
+}
+
+.quest-checkbox.checked {
+    background: var(--success-color);
+    border-color: var(--success-color);
+    box-shadow: 0 0 20px var(--success-color);
+}
+
+.quest-checkbox.checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--text-primary);
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.quest-priority-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.quest-priority-indicator.easy { background: var(--success-color); }
+.quest-priority-indicator.medium { background: var(--warning-color); }
+.quest-priority-indicator.hard { background: var(--danger-color); }
+.quest-priority-indicator.boss { 
+    background: var(--accent-color);
+    animation: bossGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes bossGlow {
+    0% { box-shadow: 0 0 5px var(--accent-color); }
+    100% { box-shadow: 0 0 15px var(--accent-color), 0 0 25px var(--accent-color); }
+}
+
+.quest-text {
+    flex: 1;
+    font-size: 0.8rem;
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+.quest-category-badge {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.4rem;
+    background: var(--accent-secondary);
+    color: var(--text-primary);
+    flex-shrink: 0;
+}
+
+.quest-actions {
+    display: flex;
+    gap: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.quest-item:hover .quest-actions {
+    opacity: 1;
+}
+
+.quest-action-btn {
+    width: 35px;
+    height: 35px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    background: var(--secondary-bg);
+    color: var(--text-primary);
+}
+
+.quest-action-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px var(--glow-color);
+}
+
+.edit-btn:hover {
+    border-color: var(--warning-color);
+    color: var(--warning-color);
+}
+
+.delete-btn:hover {
+    border-color: var(--danger-color);
+    color: var(--danger-color);
+}
+
+/* Empty State */
+.quest-empty-state {
+    text-align: center;
+    padding: 60px 30px;
+    color: var(--text-secondary);
+}
+
+.empty-pixel {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    animation: emptyBounce 2s ease-in-out infinite;
+}
+
+@keyframes emptyBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.empty-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.empty-description {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+}
+
+/* Achievements Section */
+.achievements-section {
+    padding: 30px;
+    background: var(--secondary-bg);
+    border-top: 3px solid var(--border-color);
+}
+
+.achievements-title {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--accent-color);
+    text-shadow: 0 0 10px var(--glow-color);
+}
+
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.achievement-item {
+    background: var(--secondary-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.achievement-item.unlocked {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 20px var(--glow-color);
+}
+
+.achievement-item.locked {
+    opacity: 0.5;
+    filter: grayscale(100%);
+}
+
+.achievement-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.achievement-title {
+    font-size: 0.6rem;
+    margin-bottom: 5px;
+    color: var(--text-primary);
+}
+
+.achievement-description {
+    font-size: 0.4rem;
+    color: var(--text-secondary);
+}
+
+/* Game Actions Section */
+.game-actions-section {
+    padding: 20px 30px;
+    background: var(--secondary-bg);
+    border-top: 3px solid var(--border-color);
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.game-action-btn {
+    padding: 15px 25px;
+    border: 3px solid var(--border-color);
+    border-radius: 10px;
+    background: var(--secondary-bg);
+    color: var(--text-primary);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.6rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.game-action-btn:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px var(--shadow-color);
+}
+
+.clear-btn:hover {
+    border-color: var(--danger-color);
+    color: var(--danger-color);
+}
+
+.export-btn:hover {
+    border-color: var(--accent-secondary);
+    color: var(--accent-secondary);
+}
+
+/* Notifications */
+.game-achievement-notification,
+.level-up-notification,
+.deadline-alert-notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: var(--secondary-bg);
+    border: 3px solid var(--accent-color);
+    border-radius: 15px;
+    padding: 30px;
+    z-index: 2000;
+    box-shadow: 0 0 50px var(--glow-color);
+    transition: all 0.5s ease;
+}
+
+.deadline-alert-notification {
+    border-color: var(--danger-color);
+    box-shadow: 0 0 50px rgba(255, 107, 107, 0.5);
+}
+
+.deadline-alert-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+    position: relative;
+}
+
+.deadline-alert-icon {
+    font-size: 3rem;
+    animation: deadlinePulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes deadlinePulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.2); }
+}
+
+.deadline-alert-title {
+    font-size: 1rem;
+    color: var(--danger-color);
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px var(--danger-color);
+}
+
+.deadline-alert-description {
+    font-size: 0.6rem;
+    color: var(--text-secondary);
+}
+
+.dismiss-alert-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 30px;
+    height: 30px;
+    border: 2px solid var(--danger-color);
+    border-radius: 50%;
+    background: var(--secondary-bg);
+    color: var(--danger-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+}
+
+.dismiss-alert-btn:hover {
+    background: var(--danger-color);
+    color: var(--text-primary);
+    transform: scale(1.1);
+}
+
+.game-achievement-notification.show,
+.level-up-notification.show {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.achievement-content,
+.level-up-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+}
+
+.achievement-icon,
+.level-up-icon {
+    font-size: 3rem;
+    animation: notificationPulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes notificationPulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
+}
+
+.achievement-title,
+.level-up-title {
+    font-size: 1rem;
+    color: var(--accent-color);
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px var(--glow-color);
+}
+
+.achievement-description,
+.level-up-description {
+    font-size: 0.6rem;
+    color: var(--text-secondary);
+}
+
+/* Sound Controls */
+.sound-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.sound-toggle-btn,
+.music-toggle-btn {
+    width: 50px;
+    height: 50px;
+    border: 3px solid var(--border-color);
+    border-radius: 50%;
+    background: var(--secondary-bg);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.sound-toggle-btn:hover,
+.music-toggle-btn:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 20px var(--glow-color);
+    transform: scale(1.1);
+}
+
+.sound-toggle-btn.muted,
+.music-toggle-btn.muted {
+    opacity: 0.5;
+    border-color: var(--danger-color);
+}
+
+.sound-toggle-btn.muted .sound-icon,
+.music-toggle-btn.muted .music-icon {
+    text-decoration: line-through;
+}
+
+/* Quest Deadline Styling */
+.quest-item.overdue {
+    border-color: var(--danger-color);
+    background: rgba(255, 107, 107, 0.1);
+    animation: overduePulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes overduePulse {
+    0% { box-shadow: 0 0 10px rgba(255, 107, 107, 0.3); }
+    100% { box-shadow: 0 0 20px rgba(255, 107, 107, 0.6); }
+}
+
+.quest-item.upcoming {
+    border-color: var(--warning-color);
+    background: rgba(255, 212, 59, 0.1);
+}
+
+.quest-deadline {
+    font-size: 0.4rem;
+    color: var(--text-secondary);
+    margin-top: 5px;
+}
+
+.quest-deadline.overdue {
+    color: var(--danger-color);
+    animation: deadlineBlink 1s ease-in-out infinite alternate;
+}
+
+@keyframes deadlineBlink {
+    0% { opacity: 1; }
+    100% { opacity: 0.5; }
+}
+
+.quest-deadline.upcoming {
+    color: var(--warning-color);
+}
+
+/* Desktop Optimizations */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1000px;
+    }
+    
+    .game-hud {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
+    
+    .quest-input-wrapper {
+        flex-direction: row;
+        align-items: flex-end;
+    }
+    
+    .quest-controls {
+        flex-direction: row;
+    }
+    
+    .deadline-controls {
+        flex-direction: row;
+    }
+}
+
+/* Tablet and Large Mobile */
+@media (max-width: 1200px) and (min-width: 769px) {
+    .container {
+        max-width: 95%;
+        padding: 20px;
+    }
+    
+    .game-hud {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .quest-filter-tabs {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .quest-input-wrapper {
+        flex-direction: row;
+        align-items: flex-end;
+    }
+    
+    .quest-controls {
+        flex-direction: row;
+        gap: 15px;
+    }
+    
+    .deadline-controls {
+        flex-direction: row;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 8px;
+        font-size: 16px;
+    }
+    
+    .container {
+        padding: 8px;
+        max-width: 100%;
+    }
+    
+    .game-header {
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .game-title {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+    }
+    
+    .game-subtitle {
+        font-size: 0.8rem;
+    }
+    
+    .mumbai-time-display {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .time-value {
+        font-size: 1.4rem;
+    }
+    
+    .time-label {
+        font-size: 0.7rem;
+    }
+    
+    .date-value {
+        font-size: 0.8rem;
+    }
+    
+    .game-hud {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+    
+    .hud-item {
+        padding: 12px;
+    }
+    
+    .hud-label {
+        font-size: 0.6rem;
+    }
+    
+    .hud-value {
+        font-size: 1.1rem;
+    }
+    
+    .quest-input-section {
+        padding: 25px;
+    }
+    
+    .quest-input-wrapper {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .quest-input {
+        font-size: 0.8rem;
+        padding: 15px 20px;
+        min-height: 50px;
+    }
+    
+    .quest-controls {
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 15px;
+    }
+    
+    .quest-priority,
+    .quest-category {
+        font-size: 0.6rem;
+        padding: 12px;
+        min-height: 45px;
+    }
+    
+    .deadline-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .deadline-date,
+    .deadline-time {
+        font-size: 0.6rem;
+        padding: 10px 15px;
+        min-height: 45px;
+    }
+    
+    .clear-deadline-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 0.8rem;
+    }
+    
+    .quest-add-btn {
+        padding: 15px 25px;
+        font-size: 0.7rem;
+        min-height: 50px;
+        align-self: stretch;
+    }
+    
+    .quest-filter-section {
+        padding: 20px 25px;
+    }
+    
+    .quest-filter-tabs {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .quest-filter-buttons,
+    .quest-category-filters {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .quest-filter-btn,
+    .quest-category-btn {
+        padding: 12px 16px;
+        font-size: 0.6rem;
+        min-height: 40px;
+    }
+    
+    .quest-stats {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .quest-stat-item {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+    }
+    
+    .stat-label {
+        font-size: 0.6rem;
+    }
+    
+    .stat-value {
+        font-size: 1rem;
+    }
+    
+    .alerts-section {
+        margin: 20px;
+        padding: 20px;
+    }
+    
+    .alerts-title {
+        font-size: 0.8rem;
+    }
+    
+    .dismiss-all-btn {
+        padding: 8px 16px;
+        font-size: 0.5rem;
+    }
+    
+    .alert-item {
+        padding: 15px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .alert-content {
+        text-align: center;
+    }
+    
+    .alert-title {
+        font-size: 0.6rem;
+    }
+    
+    .alert-description {
+        font-size: 0.5rem;
+    }
+    
+    .quest-list-section {
+        padding: 20px;
+        min-height: 300px;
+        max-height: 450px;
+    }
+    
+    .quest-item {
+        padding: 18px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    
+    .quest-content {
+        text-align: center;
+    }
+    
+    .quest-text {
+        font-size: 0.7rem;
+        line-height: 1.4;
+    }
+    
+    .quest-deadline {
+        font-size: 0.5rem;
+        margin-top: 5px;
+    }
+    
+    .quest-actions {
+        opacity: 1;
+        justify-content: center;
+        gap: 12px;
+    }
+    
+    .quest-action-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 0.8rem;
+    }
+    
+    .achievements-section {
+        padding: 25px;
+    }
+    
+    .achievements-title {
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+    }
+    
+    .achievements-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .achievement-item {
+        padding: 15px;
+    }
+    
+    .achievement-icon {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+    }
+    
+    .achievement-title {
+        font-size: 0.6rem;
+    }
+    
+    .achievement-description {
+        font-size: 0.4rem;
+    }
+    
+    .game-actions-section {
+        flex-direction: column;
+        gap: 12px;
+        padding: 20px 25px;
+    }
+    
+    .game-action-btn {
+        padding: 15px 25px;
+        font-size: 0.6rem;
+        justify-content: center;
+        min-height: 45px;
+    }
+    
+    .sound-controls {
+        bottom: 20px;
+        left: 20px;
+        gap: 10px;
+    }
+    
+    .sound-toggle-btn,
+    .music-toggle-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+    
+    .game-theme-selector {
+        top: 20px;
+        right: 20px;
+        gap: 10px;
+    }
+    
+    .game-theme-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 5px;
+        font-size: 14px;
+    }
+    
+    .container {
+        padding: 5px;
+    }
+    
+    .game-header {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .game-title {
+        font-size: 1.5rem;
+    }
+    
+    .game-subtitle {
+        font-size: 0.7rem;
+    }
+    
+    .mumbai-time-display {
+        padding: 12px;
+    }
+    
+    .time-value {
+        font-size: 1.2rem;
+    }
+    
+    .time-label {
+        font-size: 0.6rem;
+    }
+    
+    .date-value {
+        font-size: 0.7rem;
+    }
+    
+    .game-hud {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    .hud-item {
+        padding: 10px;
+    }
+    
+    .hud-label {
+        font-size: 0.5rem;
+    }
+    
+    .hud-value {
+        font-size: 1rem;
+    }
+    
+    .quest-input-section {
+        padding: 20px;
+    }
+    
+    .quest-input {
+        font-size: 0.7rem;
+        padding: 12px 15px;
+        min-height: 45px;
+    }
+    
+    .quest-priority,
+    .quest-category {
+        font-size: 0.5rem;
+        padding: 10px;
+        min-height: 40px;
+    }
+    
+    .deadline-date,
+    .deadline-time {
+        font-size: 0.5rem;
+        padding: 8px 12px;
+        min-height: 40px;
+    }
+    
+    .clear-deadline-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 0.7rem;
+    }
+    
+    .quest-add-btn {
+        padding: 12px 20px;
+        font-size: 0.6rem;
+        min-height: 45px;
+    }
+    
+    .quest-filter-section {
+        padding: 15px 20px;
+    }
+    
+    .quest-filter-btn,
+    .quest-category-btn {
+        padding: 10px 14px;
+        font-size: 0.5rem;
+        min-height: 35px;
+    }
+    
+    .stat-label {
+        font-size: 0.5rem;
+    }
+    
+    .stat-value {
+        font-size: 0.9rem;
+    }
+    
+    .quest-list-section {
+        padding: 15px;
+        min-height: 250px;
+        max-height: 400px;
+    }
+    
+    .quest-item {
+        padding: 15px;
+        gap: 10px;
+    }
+    
+    .quest-text {
+        font-size: 0.6rem;
+        line-height: 1.3;
+    }
+    
+    .quest-deadline {
+        font-size: 0.4rem;
+    }
+    
+    .quest-action-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 0.7rem;
+    }
+    
+    .achievements-section {
+        padding: 20px;
+    }
+    
+    .achievements-title {
+        font-size: 0.8rem;
+    }
+    
+    .achievement-item {
+        padding: 12px;
+    }
+    
+    .achievement-icon {
+        font-size: 1.5rem;
+    }
+    
+    .achievement-title {
+        font-size: 0.5rem;
+    }
+    
+    .achievement-description {
+        font-size: 0.35rem;
+    }
+    
+    .game-actions-section {
+        padding: 15px 20px;
+    }
+    
+    .game-action-btn {
+        padding: 12px 20px;
+        font-size: 0.5rem;
+        min-height: 40px;
+    }
+    
+    .sound-controls {
+        bottom: 15px;
+        left: 15px;
+    }
+    
+    .sound-toggle-btn,
+    .music-toggle-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+    }
+    
+    .game-theme-selector {
+        top: 15px;
+        right: 15px;
+    }
+    
+    .game-theme-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+    }
+}
+
+/* Touch-specific styles */
+@media (hover: none) and (pointer: coarse) {
+    .quest-item:hover {
+        transform: none;
+    }
+    
+    .quest-item:hover .quest-actions {
+        opacity: 1;
+    }
+    
+    .quest-checkbox:hover {
+        transform: none;
+    }
+    
+    .quest-action-btn:hover {
+        transform: none;
+    }
+    
+    .game-theme-btn:hover {
+        transform: none;
+    }
+    
+    .sound-toggle-btn:hover,
+    .music-toggle-btn:hover {
+        transform: none;
+    }
+    
+    .quest-filter-btn:hover,
+    .quest-category-btn:hover {
+        transform: none;
+    }
+    
+    .game-action-btn:hover {
+        transform: none;
+    }
+    
+    /* Add touch feedback */
+    .quest-checkbox:active {
+        transform: scale(0.95);
+    }
+    
+    .quest-action-btn:active {
+        transform: scale(0.9);
+    }
+    
+    .game-theme-btn:active {
+        transform: scale(0.9);
+    }
+    
+    .sound-toggle-btn:active,
+    .music-toggle-btn:active {
+        transform: scale(0.9);
+    }
+    
+    .quest-filter-btn:active,
+    .quest-category-btn:active {
+        transform: scale(0.95);
+    }
+    
+    .game-action-btn:active {
+        transform: scale(0.95);
+    }
+}
+
+/* Landscape mobile orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+    .game-hud {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .quest-filter-tabs {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    
+    .quest-stats {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+    
+    .game-actions-section {
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
+/* PWA Install and Update Prompts */
+.install-prompt,
+.update-prompt {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--secondary-bg);
+    border: 3px solid var(--accent-color);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 30px var(--glow-color);
+    z-index: 3000;
+    max-width: 300px;
+    animation: promptSlideIn 0.5s ease-out;
+}
+
+@keyframes promptSlideIn {
+    0% {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.install-prompt-content,
+.update-prompt-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    text-align: center;
+}
+
+.install-prompt-icon,
+.update-prompt-icon {
+    font-size: 2rem;
+    animation: promptPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes promptPulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
+}
+
+.install-prompt-text h3,
+.update-prompt-text h3 {
+    font-size: 0.8rem;
+    color: var(--accent-color);
+    margin-bottom: 5px;
+    text-shadow: 0 0 10px var(--glow-color);
+}
+
+.install-prompt-text p,
+.update-prompt-text p {
+    font-size: 0.5rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.install-prompt-buttons,
+.update-prompt-buttons {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.install-btn,
+.update-btn {
+    flex: 1;
+    padding: 10px 15px;
+    border: 2px solid var(--accent-color);
+    border-radius: 8px;
+    background: var(--accent-color);
+    color: var(--text-primary);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.4rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.install-btn:hover,
+.update-btn:hover {
+    background: var(--accent-secondary);
+    border-color: var(--accent-secondary);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px var(--glow-color);
+}
+
+.dismiss-install-btn,
+.dismiss-update-btn {
+    flex: 1;
+    padding: 10px 15px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--secondary-bg);
+    color: var(--text-secondary);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.4rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dismiss-install-btn:hover,
+.dismiss-update-btn:hover {
+    border-color: var(--text-secondary);
+    color: var(--text-primary);
+    transform: scale(1.05);
+}
+
+/* Mobile responsive for prompts */
+@media (max-width: 768px) {
+    .install-prompt,
+    .update-prompt {
+        bottom: 80px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+    
+    .install-prompt-content,
+    .update-prompt-content {
+        gap: 12px;
+    }
+    
+    .install-prompt-icon,
+    .update-prompt-icon {
+        font-size: 1.5rem;
+    }
+    
+    .install-prompt-text h3,
+    .update-prompt-text h3 {
+        font-size: 0.7rem;
+    }
+    
+    .install-prompt-text p,
+    .update-prompt-text p {
+        font-size: 0.4rem;
+    }
+    
+    .install-btn,
+    .update-btn,
+    .dismiss-install-btn,
+    .dismiss-update-btn {
+        padding: 8px 12px;
+        font-size: 0.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .install-prompt,
+    .update-prompt {
+        bottom: 70px;
+        padding: 15px;
+    }
+    
+    .install-prompt-content,
+    .update-prompt-content {
+        gap: 10px;
+    }
+    
+    .install-prompt-icon,
+    .update-prompt-icon {
+        font-size: 1.2rem;
+    }
+    
+    .install-prompt-text h3,
+    .update-prompt-text h3 {
+        font-size: 0.6rem;
+    }
+    
+    .install-prompt-text p,
+    .update-prompt-text p {
+        font-size: 0.35rem;
+    }
+    
+    .install-btn,
+    .update-btn,
+    .dismiss-install-btn,
+    .dismiss-update-btn {
+        padding: 6px 10px;
+        font-size: 0.25rem;
+    }
+}
+
+/* Mobile Touch Animations */
+@keyframes swipeFeedback {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes statusSlideIn {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+@keyframes statusSlideOut {
+    0% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+}
+
+/* Mobile Modal Styles */
+.quest-options-modal,
+.priority-selector-modal {
+    backdrop-filter: blur(5px);
+}
+
+.quest-options-modal button,
+.priority-selector-modal button {
+    transition: all 0.2s ease;
+}
+
+.quest-options-modal button:active,
+.priority-selector-modal button:active {
+    transform: scale(0.95);
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 768px) {
+    .quest-options-modal,
+    .priority-selector-modal {
+        padding: 10px;
+    }
+    
+    .quest-options-modal .content,
+    .priority-selector-modal .content {
+        max-width: 90%;
+        padding: 15px;
+    }
+    
+    .quest-options-modal h3,
+    .priority-selector-modal h3 {
+        font-size: 0.6rem;
+    }
+    
+    .quest-options-modal p {
+        font-size: 0.4rem;
+    }
+    
+    .quest-options-modal button,
+    .priority-selector-modal button {
+        padding: 8px;
+        font-size: 0.3rem;
+    }
+}
+
+/* Custom Scrollbar */
+.quest-list-section::-webkit-scrollbar {
+    width: 8px;
+}
+
+.quest-list-section::-webkit-scrollbar-track {
+    background: var(--secondary-bg);
+    border-radius: 4px;
+}
+
+.quest-list-section::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 4px;
+}
+
+.quest-list-section::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-secondary);
+}
+
+/* Animations for quest items */
+.quest-item.removing {
+    animation: questRemove 0.5s ease-in forwards;
+}
+
+@keyframes questRemove {
+    to {
+        opacity: 0;
+        transform: translateX(-100%) scale(0.8);
+    }
+}
+
+.quest-item.adding {
+    animation: questAdd 0.6s ease-out;
+}
+
+@keyframes questAdd {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(5px) scale(1.05);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}

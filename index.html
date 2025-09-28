@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>🎮 TASK QUEST - Retro Todo Adventure</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Level up your productivity with this retro game-themed todo app! Complete quests, earn XP, unlock achievements, and manage deadlines in a pixel-perfect arcade experience.">
+    <meta name="keywords" content="todo, task manager, productivity, retro game, quest, RPG, achievements, deadline, mobile app">
+    <meta name="author" content="Task Quest Team">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Task Quest">
+    <meta name="msapplication-TileColor" content="#1a1a2e">
+    <meta name="msapplication-TileImage" content="icons/icon-144x144.png">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- App Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16x16.png">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="icons/icon-192x192.png">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Retro Game Background -->
+    <div class="game-background">
+        <div class="pixel-grid"></div>
+        <div class="floating-pixels"></div>
+    </div>
+    
+    <!-- Game Theme Selector -->
+    <div class="game-theme-selector">
+        <button class="game-theme-btn active" data-theme="arcade" title="Arcade Classic">
+            <span class="pixel-icon">🕹️</span>
+        </button>
+        <button class="game-theme-btn" data-theme="cyberpunk" title="Cyberpunk Neon">
+            <span class="pixel-icon">🌆</span>
+        </button>
+        <button class="game-theme-btn" data-theme="fantasy" title="Fantasy Quest">
+            <span class="pixel-icon">⚔️</span>
+        </button>
+        <button class="game-theme-btn" data-theme="space" title="Space Odyssey">
+            <span class="pixel-icon">🚀</span>
+        </button>
+    </div>
+
+    <div class="container">
+        <header class="game-header">
+            <div class="game-title-section">
+                <h1 class="game-title">
+                    <span class="title-pixel">🎮</span>
+                    <span class="title-text">TASK QUEST</span>
+                    <span class="title-pixel">⚔️</span>
+                </h1>
+                <p class="game-subtitle">Level Up Your Productivity!</p>
+            </div>
+            
+            <!-- Mumbai Time Display -->
+            <div class="mumbai-time-display">
+                <div class="time-label">MUMBAI TIME</div>
+                <div class="time-value" id="mumbaiTime">--:--:--</div>
+                <div class="date-value" id="mumbaiDate">--/--/----</div>
+            </div>
+
+            <!-- Game Stats HUD -->
+            <div class="game-hud">
+                <div class="hud-item">
+                    <div class="hud-label">LEVEL</div>
+                    <div class="hud-value" id="playerLevel">1</div>
+                </div>
+                <div class="hud-item">
+                    <div class="hud-label">XP</div>
+                    <div class="hud-value" id="playerXP">0</div>
+                </div>
+                <div class="hud-item">
+                    <div class="hud-label">STREAK</div>
+                    <div class="hud-value" id="playerStreak">0</div>
+                </div>
+                <div class="hud-item">
+                    <div class="hud-label">SCORE</div>
+                    <div class="hud-value" id="playerScore">0</div>
+                </div>
+            </div>
+            
+            <!-- Health/Progress Bar -->
+            <div class="game-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                    <div class="progress-text" id="progressText">0% Complete</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="game-container">
+            <div class="quest-input-section">
+                <div class="quest-input-wrapper">
+                    <div class="quest-input-group">
+                        <input type="text" id="todoInput" placeholder="Enter your quest..." class="quest-input">
+                        <div class="quest-controls">
+                            <select id="prioritySelect" class="quest-priority">
+                                <option value="easy">🟢 EASY QUEST</option>
+                                <option value="medium" selected>🟡 NORMAL QUEST</option>
+                                <option value="hard">🔴 HARD QUEST</option>
+                                <option value="boss">⚡ BOSS QUEST</option>
+                            </select>
+                            <select id="categorySelect" class="quest-category">
+                                <option value="general">📝 GENERAL</option>
+                                <option value="work">💼 WORK</option>
+                                <option value="personal">🏠 PERSONAL</option>
+                                <option value="health">💪 HEALTH</option>
+                                <option value="learning">📚 LEARNING</option>
+                                <option value="shopping">🛒 SHOPPING</option>
+                            </select>
+                        </div>
+                        <div class="deadline-controls">
+                            <input type="date" id="deadlineDate" class="deadline-date" title="Set Deadline Date">
+                            <input type="time" id="deadlineTime" class="deadline-time" title="Set Deadline Time">
+                            <button type="button" id="clearDeadline" class="clear-deadline-btn" title="Clear Deadline">🗑️</button>
+                        </div>
+                    </div>
+                    <button id="addBtn" class="quest-add-btn">
+                        <span class="pixel-icon">⚔️</span>
+                        <span class="btn-text">ACCEPT QUEST</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="quest-filter-section">
+                <div class="quest-filter-tabs">
+                    <div class="quest-filter-buttons">
+                        <button class="quest-filter-btn active" data-filter="all">ALL QUESTS</button>
+                        <button class="quest-filter-btn" data-filter="active">ACTIVE</button>
+                        <button class="quest-filter-btn" data-filter="completed">COMPLETED</button>
+                        <button class="quest-filter-btn" data-filter="overdue">OVERDUE</button>
+                    </div>
+                    <div class="quest-category-filters">
+                        <button class="quest-category-btn active" data-category="all">ALL REALMS</button>
+                        <button class="quest-category-btn" data-category="work">💼 WORK</button>
+                        <button class="quest-category-btn" data-category="personal">🏠 PERSONAL</button>
+                        <button class="quest-category-btn" data-category="health">💪 HEALTH</button>
+                        <button class="quest-category-btn" data-category="learning">📚 LEARNING</button>
+                    </div>
+                </div>
+                <div class="quest-stats">
+                    <div class="quest-stat-item">
+                        <span class="stat-label">QUESTS REMAINING:</span>
+                        <span id="todoCount" class="stat-value">0</span>
+                    </div>
+                    <div class="quest-stat-item">
+                        <span class="stat-label">COMBO STREAK:</span>
+                        <span id="streakCount" class="stat-value">0</span>
+                    </div>
+                    <div class="quest-stat-item">
+                        <span class="stat-label">OVERDUE:</span>
+                        <span id="overdueCount" class="stat-value overdue">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alerts Section -->
+            <div class="alerts-section" id="alertsSection" style="display: none;">
+                <div class="alerts-header">
+                    <h3 class="alerts-title">🚨 QUEST ALERTS</h3>
+                    <button id="dismissAllAlerts" class="dismiss-all-btn">DISMISS ALL</button>
+                </div>
+                <div id="alertsList" class="alerts-list">
+                    <!-- Alerts will be dynamically added here -->
+                </div>
+            </div>
+
+            <div class="quest-list-section">
+                <ul id="todoList" class="quest-list">
+                    <!-- Quests will be dynamically added here -->
+                </ul>
+                <div id="emptyState" class="quest-empty-state">
+                    <div class="empty-pixel">🎮</div>
+                    <h3 class="empty-title">NO QUESTS YET</h3>
+                    <p class="empty-description">Accept your first quest to begin your adventure!</p>
+                </div>
+            </div>
+
+            <div class="achievements-section">
+                <h3 class="achievements-title">🏆 ACHIEVEMENTS</h3>
+                <div id="achievementsList" class="achievements-grid">
+                    <!-- Achievements will be dynamically added here -->
+                </div>
+            </div>
+
+            <div class="game-actions-section">
+                <button id="clearCompleted" class="game-action-btn clear-btn">
+                    <span class="pixel-icon">🗑️</span>
+                    <span class="btn-text">CLEAR COMPLETED</span>
+                </button>
+                <button id="exportBtn" class="game-action-btn export-btn">
+                    <span class="pixel-icon">💾</span>
+                    <span class="btn-text">SAVE GAME</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Achievement Notification -->
+    <div id="achievementNotification" class="game-achievement-notification">
+        <div class="achievement-content">
+            <div class="achievement-icon">🏆</div>
+            <div class="achievement-text">
+                <h4 class="achievement-title">ACHIEVEMENT UNLOCKED!</h4>
+                <p class="achievement-description"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Level Up Notification -->
+    <div id="levelUpNotification" class="level-up-notification">
+        <div class="level-up-content">
+            <div class="level-up-icon">⭐</div>
+            <div class="level-up-text">
+                <h3 class="level-up-title">LEVEL UP!</h3>
+                <p class="level-up-description">You are now level <span id="newLevel">2</span>!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deadline Alert Notification -->
+    <div id="deadlineAlert" class="deadline-alert-notification">
+        <div class="deadline-alert-content">
+            <div class="deadline-alert-icon">⏰</div>
+            <div class="deadline-alert-text">
+                <h4 class="deadline-alert-title">DEADLINE ALERT!</h4>
+                <p class="deadline-alert-description"></p>
+            </div>
+            <button class="dismiss-alert-btn" onclick="taskQuest.dismissAlert()">✕</button>
+        </div>
+    </div>
+
+    <!-- Sound Controls -->
+    <div class="sound-controls">
+        <button id="soundToggle" class="sound-toggle-btn" title="Toggle Sound">
+            <span class="sound-icon">🔊</span>
+        </button>
+        <button id="musicToggle" class="music-toggle-btn" title="Toggle Background Music">
+            <span class="music-icon">🎵</span>
+        </button>
+    </div>
+
+    <!-- PWA Install Prompt -->
+    <div id="installPrompt" class="install-prompt" style="display: none;">
+        <div class="install-prompt-content">
+            <div class="install-prompt-icon">📱</div>
+            <div class="install-prompt-text">
+                <h3>Install Task Quest</h3>
+                <p>Get the full app experience on your device!</p>
+            </div>
+            <div class="install-prompt-buttons">
+                <button id="installBtn" class="install-btn">Install</button>
+                <button id="dismissInstall" class="dismiss-install-btn">Later</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Available Prompt -->
+    <div id="updatePrompt" class="update-prompt" style="display: none;">
+        <div class="update-prompt-content">
+            <div class="update-prompt-icon">🔄</div>
+            <div class="update-prompt-text">
+                <h3>Update Available</h3>
+                <p>New features and improvements are ready!</p>
+            </div>
+            <div class="update-prompt-buttons">
+                <button id="updateBtn" class="update-btn">Update</button>
+                <button id="dismissUpdate" class="dismiss-update-btn">Later</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('🎮 Task Quest: Service Worker registered successfully', registration);
+                        
+                        // Check for updates
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // New update available
+                                    showUpdatePrompt();
+                                }
+                            });
+                        });
+                    })
+                    .catch((error) => {
+                        console.error('🎮 Task Quest: Service Worker registration failed', error);
+                    });
+            });
+        }
+
+        // PWA Install Prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('🎮 Task Quest: Install prompt triggered');
+            e.preventDefault();
+            deferredPrompt = e;
+            showInstallPrompt();
+        });
+
+        // Handle successful installation
+        window.addEventListener('appinstalled', () => {
+            console.log('🎮 Task Quest: App installed successfully');
+            hideInstallPrompt();
+            deferredPrompt = null;
+        });
+
+        function showInstallPrompt() {
+            const installPrompt = document.getElementById('installPrompt');
+            if (installPrompt && deferredPrompt) {
+                installPrompt.style.display = 'block';
+                
+                document.getElementById('installBtn').addEventListener('click', async () => {
+                    if (deferredPrompt) {
+                        deferredPrompt.prompt();
+                        const { outcome } = await deferredPrompt.userChoice;
+                        console.log('🎮 Task Quest: Install prompt outcome', outcome);
+                        hideInstallPrompt();
+                    }
+                });
+                
+                document.getElementById('dismissInstall').addEventListener('click', () => {
+                    hideInstallPrompt();
+                });
+            }
+        }
+
+        function hideInstallPrompt() {
+            const installPrompt = document.getElementById('installPrompt');
+            if (installPrompt) {
+                installPrompt.style.display = 'none';
+            }
+        }
+
+        function showUpdatePrompt() {
+            const updatePrompt = document.getElementById('updatePrompt');
+            if (updatePrompt) {
+                updatePrompt.style.display = 'block';
+                
+                document.getElementById('updateBtn').addEventListener('click', () => {
+                    if ('serviceWorker' in navigator) {
+                        navigator.serviceWorker.getRegistration().then((registration) => {
+                            if (registration && registration.waiting) {
+                                registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+                                window.location.reload();
+                            }
+                        });
+                    }
+                    hideUpdatePrompt();
+                });
+                
+                document.getElementById('dismissUpdate').addEventListener('click', () => {
+                    hideUpdatePrompt();
+                });
+            }
+        }
+
+        function hideUpdatePrompt() {
+            const updatePrompt = document.getElementById('updatePrompt');
+            if (updatePrompt) {
+                updatePrompt.style.display = 'none';
+            }
+        }
+
+        // Handle app shortcuts
+        const urlParams = new URLSearchParams(window.location.search);
+        const action = urlParams.get('action');
+        const filter = urlParams.get('filter');
+        
+        if (action === 'add' && window.taskQuest) {
+            // Focus on input for quick quest addition
+            setTimeout(() => {
+                const questInput = document.getElementById('todoInput');
+                if (questInput) {
+                    questInput.focus();
+                }
+            }, 500);
+        }
+        
+        if (filter && window.taskQuest) {
+            // Set filter from shortcut
+            setTimeout(() => {
+                taskQuest.setFilter(filter);
+            }, 500);
+        }
+    </script>
+</body>
+</html>
+
