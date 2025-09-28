@@ -1,4 +1,4 @@
-# T-Quest-Gamified-To-Do-web-aplication-
+<img width="1919" height="271" alt="image" src="https://github.com/user-attachments/assets/3daf0e3c-cac3-4017-a880-f5cbab5988ba" /># T-Quest-Gamified-To-Do-web-aplication-
 🎮 TASK QUEST - Retro Todo Adventure
 
 
@@ -20,6 +20,9 @@
 </div>
 
 ---
+
+<img width="1919" height="271" alt="image" src="https://github.com/user-attachments/assets/41f336e4-3bb1-46ef-90a3-21f36b6ac272" />
+
 
 ## 🎯 Project Overview
 
